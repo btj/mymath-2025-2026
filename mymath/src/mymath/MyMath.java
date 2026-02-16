@@ -136,7 +136,7 @@ public class MyMath {
 	}
 	
 	/**
-	 * @pre | array == null
+	 * @pre | array != null
 	 * @post | result ==
 	 *       | IntStream.range(0, array.length).filter(i -> array[i] == 0).count()
 	 */
