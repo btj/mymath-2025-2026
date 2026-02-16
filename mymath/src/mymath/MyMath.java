@@ -1,5 +1,6 @@
 package mymath;
 
+import java.util.Arrays;
 import java.util.stream.IntStream;
 
 public class MyMath {
@@ -9,8 +10,9 @@ public class MyMath {
 	 * afgerond, van het gegeven niet-negatieve
 	 * getal.
 	 * 
-	 * @pre `x` is niet negatief.
-	 *    | 0 <= x
+	 * @throws IllegalArgumentException
+	 *    `x` is negatief
+	 *    | x < 0
 	 * @post Het kwadraat van het resultaat is niet
 	 *       groter dan `x`, en het kwadraat van
 	 *       één meer dan het resultaat is groter dan
@@ -19,6 +21,8 @@ public class MyMath {
 	 *    | x < (result + 1) * (result + 1)
 	 */
 	static int sqrt(int x) {
+		if (x < 0)
+			throw new IllegalArgumentException("`x` is kleiner dan 0");
 		int result = 0;
 		while ((result + 1) * (result + 1) <= x)
 			result++;
@@ -132,29 +136,60 @@ public class MyMath {
 	}
 	
 	/**
-	 * @post | result == IntStream.range(0, array.length).filter(i -> array[i] == 0).count()
+	 * @pre | array == null
+	 * @post | result ==
+	 *       | IntStream.range(0, array.length).filter(i -> array[i] == 0).count()
 	 */
 	static int countZeros(int[] array) {
-		// Implementeer!
+		int result = 0;
+		for (int i = 0; i < array.length; i++)
+			if (array[i] == 0)
+				result++;
+		return result;
 	}
 	
 	/**
 	 * Voegt het element van `array` op index `n` in in het gesorteerde segment van `array` tussen index
 	 * 0 en `n - 1`. Schuift de gesorteerde elementen groter dan `n` één plaats naar rechts op.
 	 * 
+	 * @pre | array != null
+	 * @pre | 0 <= n && n < array.length
 	 * @pre De elementen van `array` op indices 0 tot en met `n - 1` staan gesorteerd.
+	 *      | IntStream.range(0, n - 1).allMatch(i -> array[i] <= array[i + 1])
 	 * @post De elementen van `array` op indices 0 tot en met `n` staan gesorteerd.
+	 *      | IntStream.range(0, n).allMatch(i -> array[i] <= array[i + 1])
 	 * @post Het stuk van de array op indices 0 tot en met `n` bevat dezelfde elementen als voor de oproep,
 	 *       en met hetzelfde aantal voorkomens.
+	 *      | IntStream.range(0, n + 1).allMatch(i ->
+	 *      |     IntStream.range(0, n + 1).filter(j -> array[j] == array[i]).count() ==
+	 *      |     IntStream.range(0, n + 1).filter(j -> old(array.clone())[j] == array[i]).count()
+	 *      | )
 	 * @post De elementen op indices groter dan `n` zijn ongewijzigd.
+	 *      | Arrays.equals(array, n + 1, array.length, old(array.clone()), n + 1, array.length)
 	 */
 	static void insert(int[] array, int n) {
-		
+		int toInsert = array[n];
+		int i = n;
+		for (; 1 <= i; i--) {
+			if (array[i - 1] <= toInsert)
+				break;
+			array[i] = array[i - 1];
+		}
+		array[i] = toInsert;
 	}
 	
-	/** Documenteer! */
+	/**
+	 * @pre | array != null
+	 * @post | IntStream.range(0, array.length - 1).allMatch(i -> array[i] <= array[i + 1])
+	 * @post |
+	 *      | IntStream.range(0, array.length).allMatch(i ->
+	 *      |     IntStream.range(0, array.length).filter(j -> array[j] == array[i]).count() ==
+	 *      |     IntStream.range(0, array.length).filter(j -> old(array.clone())[j] == array[i]).count()
+	 *      | )
+	 */
 	static void sort(int[] array) {
-		// Implementeer, gebruikmakend van `insert`
+		for (int i = 1; i < array.length; i++)
+			insert(array, i);
 	}
 
 }

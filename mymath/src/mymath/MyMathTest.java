@@ -53,6 +53,11 @@ class MyMathTest {
 		assertArrayEquals(new int[] {10, 15, 20, 30, -7}, xs);
 	}
 	
-	
+	@Test
+	void testSort() {
+		int[] xs = {15, 10, 30, 20, -7};
+		MyMath.sort(xs);
+		assertArrayEquals(new int[] {-7, 10, 15, 20, 30}, xs);
+	}
 
 }
