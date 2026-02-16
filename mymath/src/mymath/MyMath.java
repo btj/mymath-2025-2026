@@ -179,6 +179,8 @@ public class MyMath {
 	}
 	
 	/**
+	 * Sorteert de gegeven array.
+	 * 
 	 * @pre | array != null
 	 * @post | IntStream.range(0, array.length - 1).allMatch(i -> array[i] <= array[i + 1])
 	 * @post |
