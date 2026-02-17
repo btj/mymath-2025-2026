@@ -48,9 +48,18 @@ class MyMathTest {
 	
 	@Test
 	void testInsert() {
-		int[] xs = {10, 20, 30, 15, -7};
-		MyMath.insert(xs, 3);
-		assertArrayEquals(new int[] {10, 15, 20, 30, -7}, xs);
+		{
+			int[] xs = {10, 20, 30, 15, -7};
+			MyMath.insert(xs, 3);
+			assertArrayEquals(new int[] {10, 15, 20, 30, -7}, xs);
+		}
+	}
+	
+	@Test
+	void testSort() {
+		int[] xs = {15, 10, -7, 30, 20};
+		MyMath.sort(xs);
+		assertArrayEquals(new int[] {-7, 10, 15, 20, 30}, xs);
 	}
 	
 	
